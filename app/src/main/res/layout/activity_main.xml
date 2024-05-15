@@ -3,10 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,21 +19,21 @@
             android:fontFamily="@font/indigo_daisy"
             android:textSize="50sp"
             android:layout_marginTop="60dp"
-            android:layout_marginLeft="25dp"/>
-
+            android:layout_marginLeft="25dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/comentarioCorreoYContrasena"
-            android:fontFamily="@font/roboto_regular"
+            android:text="@string/ingresa_email_y_password"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="25dp"/>
+            android:fontFamily="@font/roboto_regular"/>
 
         <EditText
+            android:id="@+id/edittext_email"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Email"
+            android:hint="@string/email"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="50dp"
@@ -44,16 +43,19 @@
             android:background="@drawable/edittext_custom"/>
 
         <EditText
+            android:id="@+id/edittext_password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Password"
+            android:hint="@string/password"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
             android:inputType="textPassword"
             android:textSize="15sp"
             android:padding="15dp"
-            android:background="@drawable/edittext_custom"/>
+            android:background="@drawable/edittext_custom"
+            />
+
 
     </LinearLayout>
 
@@ -65,31 +67,33 @@
         android:gravity="center">
 
         <Button
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/iniciarSesion"
-            android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="@string/iniciar_sesion"
             android:layout_marginTop="200dp"
             android:backgroundTint="@color/green"
             android:background="@drawable/rounded_button"
             />
 
         <ImageView
+            android:id="@+id/imageview_go_to_register"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_arrow_right"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="15dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/registrarse"
+            android:text="@string/registrate_aqui"
             android:layout_marginBottom="20dp"/>
 
 
-
     </LinearLayout>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

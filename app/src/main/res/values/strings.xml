@@ -1,10 +1,9 @@
 <resources>
-    <string name="app_name">Kotlin Udemy Delivery</string>
-
+    <string name="app_name">DeliveryKotlinUdemy</string>
     <string name="login">Login</string>
-    <string name="comentarioCorreoYContrasena">Ingresa con tu correo y contrasena</string>
-    <string name="iniciarSesion">INICIAR SESION</string>
-    <string name="registrarse">Registrate aqui</string>
-
-
+    <string name="ingresa_email_y_password">Ingresa con tu correo y contraseña</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="iniciar_sesion">INICIAR SESION</string>
+    <string name="registrate_aqui">Registrate aqui</string>
 </resources>
