@@ -9,10 +9,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.lsepulveda.kotlinudemydelivery.R
+import com.lsepulveda.kotlinudemydelivery.activities.client.home.ClientHomeActivity
 import com.lsepulveda.kotlinudemydelivery.models.ResponseHttp
 import com.lsepulveda.kotlinudemydelivery.models.User
 import com.lsepulveda.kotlinudemydelivery.providers.UsersProvider
+import com.lsepulveda.kotlinudemydelivery.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,6 +80,11 @@ class RegisterActivity : AppCompatActivity() {
                     call: Call<ResponseHttp>,
                     response: Response<ResponseHttp>
                 ) {
+
+                    if(response.body()?.isSuccess == true){
+                        saveUserInSession(response.body()?.data.toString())
+                        goToClientHome()
+                    }
                     // imprime el mensaje que retorno el servidor en message
                     Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
 
@@ -92,6 +100,20 @@ class RegisterActivity : AppCompatActivity() {
 
             })
         }
+    }
+
+    private fun saveUserInSession(data: String){
+        val sharedPref = SharedPref(this)
+        val gson = Gson()
+        // tranforma lo que trae la data en objeto usuario
+        val user = gson.fromJson(data, User::class.java)
+        sharedPref.save("user", user)
+    }
+
+    private fun goToClientHome(){
+        val i = Intent(this, SaveImageActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // eliminar historial de pantallas
+        startActivity(i)
     }
 
     fun String.isEmailValid() : Boolean{

@@ -36,6 +36,13 @@ android {
 }
 
 dependencies {
+    // imagen circular
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    // ver imagen desde url
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    // seleccionar img para elegir de galeria
+    implementation("com.github.dhaval2404:imagepicker:2.1")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
