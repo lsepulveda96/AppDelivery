@@ -13,13 +13,19 @@ import retrofit2.Call
 import java.io.File
 
 // utiliza rutas para lanzar peticion
-class UsersProvider {
+class UsersProvider(val token: String? = null) {
     private var usersRoutes: UsersRoutes? = null
+    private var usersRoutesToken: UsersRoutes? = null
 
     // constructor de la clase. primero que se ejecuta al instanciar la clase
     init{
         val api = ApiRoutes()
         usersRoutes = api.getUsersRoutes()
+
+        if(token != null){
+            usersRoutesToken = api.getUsersRoutesWithToken(token!!)
+        }
+
     }
 
     // "?" metodo puede retornar o no un null
@@ -32,7 +38,7 @@ class UsersProvider {
     }
 
     fun updateWhithoutImage(user: User) : Call<ResponseHttp>? {
-        return usersRoutes?.updateWithoutImage(user)
+        return usersRoutesToken?.updateWithoutImage(user, token!!)
     }
 
     fun update(file: File, user: User) : Call<ResponseHttp>?{
@@ -40,6 +46,6 @@ class UsersProvider {
         val body = MultipartBody.Part.createFormData("image", file.name, reqFile)
         val requestBody = RequestBody.create(MediaType.parse("text/plain"), user.toJson()) // datos del usuario
 
-        return usersRoutes?.update(body, requestBody)
+        return usersRoutesToken?.update(body, requestBody, token!!)
     }
 }

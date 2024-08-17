@@ -38,7 +38,7 @@ class ClientUpdateActivity : AppCompatActivity() {
 
     private var imageFile: File? = null
 
-    var usersProvider = UsersProvider()
+    var usersProvider : UsersProvider? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +54,8 @@ class ClientUpdateActivity : AppCompatActivity() {
 
         // obtiene los datos del usuario
         getUserFromSession()
+
+        usersProvider = UsersProvider(user?.sessionToken)
 
         editTextName?.setText(user?.name)
         editTextLastname?.setText(user?.lastname)
@@ -77,6 +79,65 @@ class ClientUpdateActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun updateData() {
+
+        val name = editTextName?.text.toString()
+        val lastname = editTextLastname?.text.toString()
+        val phone = editTextPhone?.text.toString()
+
+        user?.name = name
+        user?.lastname = lastname
+        user?.phone = phone
+
+        if(imageFile != null){
+            usersProvider?.update(imageFile!!, user!!)?.enqueue(object: Callback<ResponseHttp> {
+                override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
+                    Log.d(TAG, "Response: $response")
+                    Log.d(TAG, "Response: ${response.body()}")
+
+                    Toast.makeText(this@ClientUpdateActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
+
+                    if(response.body()?.isSuccess == true){
+                        saveUserInSession(response.body()?.data.toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
+                    Log.d(TAG, "Error: ${t.message}")
+                    Toast.makeText(this@ClientUpdateActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }else{
+            usersProvider?.updateWhithoutImage(user!!)?.enqueue(object: Callback<ResponseHttp> {
+                override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
+                    Log.d(TAG, "Response: $response")
+                    Log.d(TAG, "Response: ${response.body()}")
+
+                    Toast.makeText(this@ClientUpdateActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
+
+                    if(response.body()?.isSuccess == true){
+                        saveUserInSession(response.body()?.data.toString())
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
+                    Log.d(TAG, "Error: ${t.message}")
+                    Toast.makeText(this@ClientUpdateActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+    }
+
+    private fun saveUserInSession(data: String){
+        val gson = Gson()
+        // tranforma lo que trae la data en objeto usuario
+        val user = gson.fromJson(data, User::class.java)
+        sharedPref?.save("user", user)
+    }
+
     private val startImageForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             result: ActivityResult ->
 
@@ -98,59 +159,6 @@ class ClientUpdateActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun updateData() {
-
-        val name = editTextName?.text.toString()
-        val lastname = editTextLastname?.text.toString()
-        val phone = editTextPhone?.text.toString()
-
-        user?.name = name
-        user?.lastname = lastname
-        user?.phone = phone
-
-        if(imageFile != null){
-            usersProvider.update(imageFile!!, user!!)?.enqueue(object: Callback<ResponseHttp> {
-                override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
-                    Log.d(TAG, "Response: $response")
-                    Log.d(TAG, "Response: ${response.body()}")
-
-                    Toast.makeText(this@ClientUpdateActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
-
-                    saveUserInSession(response.body()?.data.toString())
-                }
-
-                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
-                    Log.d(TAG, "Error: ${t.message}")
-                    Toast.makeText(this@ClientUpdateActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }else{
-            usersProvider.updateWhithoutImage(user!!)?.enqueue(object: Callback<ResponseHttp> {
-                override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
-                    Log.d(TAG, "Response: $response")
-                    Log.d(TAG, "Response: ${response.body()}")
-
-                    Toast.makeText(this@ClientUpdateActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
-
-                    saveUserInSession(response.body()?.data.toString())
-                }
-
-                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
-                    Log.d(TAG, "Error: ${t.message}")
-                    Toast.makeText(this@ClientUpdateActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
-
-    }
-
-    private fun saveUserInSession(data: String){
-        val gson = Gson()
-        // tranforma lo que trae la data en objeto usuario
-        val user = gson.fromJson(data, User::class.java)
-        sharedPref?.save("user", user)
-    }
     private fun selectImage(){
         ImagePicker.with(this)
             .crop()
