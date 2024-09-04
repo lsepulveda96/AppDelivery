@@ -30,6 +30,7 @@ class SelectRolesActivity : AppCompatActivity() {
 
         getUserFromSession()
 
+
         adapter = RolesAdapter(this, user?.roles!!) // roles puede ser nulo
         recyclerViewRoles?.adapter = adapter
     }

@@ -25,6 +25,7 @@
             android:hint="Nombre de la categoria"
             android:background="@drawable/edittext_custom"
             android:layout_marginTop="50dp"
+            
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:padding="15dp"

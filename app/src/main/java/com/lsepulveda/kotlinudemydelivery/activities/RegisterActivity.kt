@@ -86,7 +86,7 @@ class RegisterActivity : AppCompatActivity() {
                         goToClientHome()
                     }
                     // imprime el mensaje que retorno el servidor en message
-                    Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
 
                     Log.d(TAG, "Response: ${response}")
                     Log.d(TAG, "Response: ${response.body()}")
