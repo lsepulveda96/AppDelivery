@@ -11,12 +11,17 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import java.io.File
 
+// METODOS PARA RECIBIR LOS DATOS
 class CategoriesProvider(val token: String) {
     private var categoriesRoutes: CategoriesRoutes? = null
 
     init {
         val api = ApiRoutes()
         categoriesRoutes = api.getCategoriesRoutes(token)
+    }
+
+    fun getAll(): Call<ArrayList<Category>>?{
+        return categoriesRoutes?.getAll(token)
     }
 
     fun create(file: File, category: Category) : Call<ResponseHttp>?{

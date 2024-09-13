@@ -3,7 +3,10 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
 
+
+
 android {
+
     namespace = "com.lsepulveda.kotlinudemydelivery"
     compileSdk = 34
 
@@ -33,7 +36,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 }
+
 
 dependencies {
     // imagen circular
@@ -55,4 +60,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // para progress dialog
+    implementation("com.github.tommasoberlose:progress-dialog:1.0.0")
+
+    // para deslizar imagenes
+    implementation("com.github.denzcoskun:ImageSlideshow:0.1.2")
 }
