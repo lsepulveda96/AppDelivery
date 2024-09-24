@@ -1,5 +1,6 @@
 package com.lsepulveda.kotlinudemydelivery.api
 
+import com.lsepulveda.kotlinudemydelivery.routes.AddressRoutes
 import com.lsepulveda.kotlinudemydelivery.routes.CategoriesRoutes
 import com.lsepulveda.kotlinudemydelivery.routes.ProductsRoutes
 import com.lsepulveda.kotlinudemydelivery.routes.UsersRoutes
@@ -20,6 +21,10 @@ class ApiRoutes {
 
     fun getCategoriesRoutes(token: String): CategoriesRoutes{
         return retrofit.getClientWithToken(API_URL, token).create(CategoriesRoutes::class.java)
+    }
+
+    fun getAddressRoutes(token: String): AddressRoutes {
+        return retrofit.getClientWithToken(API_URL, token).create(AddressRoutes::class.java)
     }
 
     fun getProductsRoutes(token: String): ProductsRoutes{

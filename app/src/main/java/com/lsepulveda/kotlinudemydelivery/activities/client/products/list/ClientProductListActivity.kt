@@ -18,26 +18,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-//import android.os.Bundle
-//import android.telecom.Call
-//import android.util.Log
-//import android.widget.Toast
-//import androidx.activity.enableEdgeToEdge
-//import androidx.appcompat.app.AppCompatActivity
-//import androidx.core.view.ViewCompat
-//import androidx.core.view.WindowInsetsCompat
-//import androidx.recyclerview.widget.GridLayoutManager
-//import androidx.recyclerview.widget.RecyclerView
-//import com.google.gson.Gson
-//import com.lsepulveda.kotlinudemydelivery.R
-//import com.lsepulveda.kotlinudemydelivery.adapters.ProductsAdapter
-//import com.lsepulveda.kotlinudemydelivery.models.Product
-//import com.lsepulveda.kotlinudemydelivery.models.User
-//import com.lsepulveda.kotlinudemydelivery.providers.ProductsProvider
-//import com.lsepulveda.kotlinudemydelivery.utils.SharedPref
-//import retrofit2.Callback
-//import retrofit2.Response
-
 class ClientProductListActivity : AppCompatActivity() {
 
     val TAG = "ClientProducts"

@@ -1,9 +1,13 @@
 package com.lsepulveda.kotlinudemydelivery.fragments.client
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -14,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.lsepulveda.kotlinudemydelivery.R
+import com.lsepulveda.kotlinudemydelivery.activities.client.shopping_bag.ClientShoppingBagActivity
 import com.lsepulveda.kotlinudemydelivery.adapters.CategoriesAdapter
 import com.lsepulveda.kotlinudemydelivery.models.Category
 import com.lsepulveda.kotlinudemydelivery.models.User
@@ -42,6 +47,9 @@ class ClientCategoriesFragment : Fragment() {
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.fragment_client_categories, container, false)
 
+        setHasOptionsMenu(true)
+
+
         toolbar = myView?.findViewById(R.id.toolbar)
         toolbar?.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         toolbar?.title = "Categorias"
@@ -58,6 +66,24 @@ class ClientCategoriesFragment : Fragment() {
         getCategories()
 
         return myView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_shopping_bag, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if(item.itemId == R.id.item_shopping_bag){
+            goToShoppingBag()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun goToShoppingBag(){
+        val i = Intent(requireContext(), ClientShoppingBagActivity::class.java)
+        startActivity(i)
     }
 
     private fun getCategories(){
