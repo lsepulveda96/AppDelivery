@@ -13,13 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.lsepulveda.kotlinudemydelivery.R
 import com.lsepulveda.kotlinudemydelivery.activities.client.adress.create.ClientAdressCreateActivity
 import com.lsepulveda.kotlinudemydelivery.activities.client.payments.form.ClientPaymentFormActivity
 import com.lsepulveda.kotlinudemydelivery.adapters.AddressAdapter
+import com.lsepulveda.kotlinudemydelivery.adapters.ShoppingBagAdapter
 import com.lsepulveda.kotlinudemydelivery.models.Address
+import com.lsepulveda.kotlinudemydelivery.models.Order
+import com.lsepulveda.kotlinudemydelivery.models.Product
+import com.lsepulveda.kotlinudemydelivery.models.ResponseHttp
 import com.lsepulveda.kotlinudemydelivery.models.User
 import com.lsepulveda.kotlinudemydelivery.providers.AddressProvider
+import com.lsepulveda.kotlinudemydelivery.providers.OrdersProvider
 import com.lsepulveda.kotlinudemydelivery.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,6 +41,7 @@ class ClientAddressListActivity : AppCompatActivity() {
     var buttonNext: Button? = null
     var adapter : AddressAdapter? = null
     var addressProvider: AddressProvider? = null // lanza la peticion
+    var ordersProvider: OrdersProvider? = null
     var sharedPref : SharedPref? = null
     var user: User? = null
 
@@ -42,11 +49,15 @@ class ClientAddressListActivity : AppCompatActivity() {
 
     val gson = Gson()
 
+    var selectedProducts = ArrayList<Product>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client_adress_list)
 
         sharedPref = SharedPref(this)
+
+        getProductsFromSharedPref() // obtenemos productos de la sesion
 
         fabCreateAddress = findViewById(R.id.fab_address_create)
         toolbar = findViewById(R.id.toolbar)
@@ -62,6 +73,7 @@ class ClientAddressListActivity : AppCompatActivity() {
 
         getUserFromSession()
         addressProvider = AddressProvider(user?.sessionToken!!)
+        ordersProvider = OrdersProvider(user?.sessionToken!!)
 
         fabCreateAddress?.setOnClickListener{ goToAddressCreate() }
 
@@ -73,13 +85,36 @@ class ClientAddressListActivity : AppCompatActivity() {
     private fun getAddressFromSession(){
         if(!sharedPref?.getData("address").isNullOrBlank()){
             val a = gson.fromJson(sharedPref?.getData("address"), Address::class.java) // si user ya seleccion dir
-            goToPaymentForm()
+            createOrder(a.id!!) // id address
+        //goToPaymentForm()
         }else{
             Toast.makeText(this, "Selecciona una direccion para continuar", Toast.LENGTH_SHORT).show()
         }
     }
 
+    private fun createOrder(idAddress: String){
+        val order = Order(
+            products = selectedProducts,
+            idClient = user?.id!!,
+            idAddress = idAddress
+        )
 
+        ordersProvider?.create(order)?.enqueue(object: Callback<ResponseHttp>{
+            override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
+                // si hubo respuesta del servidor
+                if(response.body() != null){
+                    Toast.makeText(this@ClientAddressListActivity, "${response.body()?.message}", Toast.LENGTH_LONG).show()
+                }else{
+                    Toast.makeText(this@ClientAddressListActivity, "Ocurrio un error en la peticion", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
+                Toast.makeText(this@ClientAddressListActivity, "Error: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+
+        })
+    }
     private fun goToPaymentForm(){
         val i = Intent(this, ClientPaymentFormActivity::class.java)
         startActivity(i)
@@ -127,6 +162,14 @@ class ClientAddressListActivity : AppCompatActivity() {
 
         })
 
+    }
+
+    private fun getProductsFromSharedPref() {
+
+        if(!sharedPref?.getData("order").isNullOrBlank()){ // existe una orden en shared pref
+            val type = object : TypeToken<ArrayList<Product>>() {}.type
+            selectedProducts = gson.fromJson(sharedPref?.getData("order"), type) // pasa un tipo json a un array de product
+        }
     }
 
 }
