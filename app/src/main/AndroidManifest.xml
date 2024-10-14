@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -25,6 +27,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DeliveryKotlinUdemy"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".activities.delivery.home.orders.map.DeliveryOrdersMapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.delivery.home.orders.detail.DeliveryOrdersDetailActivity"
+            android:exported="true"
+            android:parentActivityName=".activities.delivery.home.DeliveryHomeActivity" />
+        <activity
+            android:name=".activities.restaurant.orders.detail.RestaurantOrdersDetailActivity"
+            android:exported="true"
+            android:parentActivityName=".activities.restaurant.home.RestaurantHomeActivity" />
+        <activity
+            android:name=".activities.client.orders.detail.ClientOrdersDetailActivity"
+            android:exported="true"
+            android:parentActivityName=".activities.client.home.ClientHomeActivity" />
         <activity
             android:name=".activities.client.payments.form.ClientPaymentFormActivity"
             android:exported="false" />
@@ -83,7 +100,8 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBaV90uUxmm7-S5V6f40-nje-1V3NHtbos" />
+            android:value="AIzaSyAFP6V3BIblFBCkunUTTYolEAG7un_jpwU" />
+<!--            android:value="AIzaSyBaV90uUxmm7-S5V6f40-nje-1V3NHtbos" />-->
     </application>
 
 </manifest>

@@ -4,25 +4,18 @@ package com.lsepulveda.kotlinudemydelivery.activities.restaurant.home
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.lsepulveda.kotlinudemydelivery.R
 import com.lsepulveda.kotlinudemydelivery.activities.MainActivity
-import com.lsepulveda.kotlinudemydelivery.fragments.client.ClientCategoriesFragment
-import com.lsepulveda.kotlinudemydelivery.fragments.client.ClientOrdersFragment
 import com.lsepulveda.kotlinudemydelivery.fragments.client.ClientProfileFragment
 import com.lsepulveda.kotlinudemydelivery.fragments.restaurant.RestaurantCategoryFragment
 import com.lsepulveda.kotlinudemydelivery.fragments.restaurant.RestaurantOrdersFragment
 import com.lsepulveda.kotlinudemydelivery.fragments.restaurant.RestaurantProductFragment
 import com.lsepulveda.kotlinudemydelivery.models.User
 import com.lsepulveda.kotlinudemydelivery.utils.SharedPref
-import kotlin.math.log
 
 class RestaurantHomeActivity : AppCompatActivity() {
 

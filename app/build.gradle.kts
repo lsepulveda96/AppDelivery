@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.lsepulveda.kotlinudemydelivery"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -76,4 +76,8 @@ dependencies {
 
     // para view pager
     implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    // para trazado de rutas
+    implementation("com.github.malikdawar:drawroute:1.5")
+
 }

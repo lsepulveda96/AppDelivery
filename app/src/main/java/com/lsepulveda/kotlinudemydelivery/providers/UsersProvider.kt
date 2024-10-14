@@ -2,6 +2,7 @@ package com.lsepulveda.kotlinudemydelivery.providers
 
 import android.provider.MediaStore.Audio.Media
 import com.lsepulveda.kotlinudemydelivery.api.ApiRoutes
+import com.lsepulveda.kotlinudemydelivery.models.Category
 import com.lsepulveda.kotlinudemydelivery.models.ResponseHttp
 import com.lsepulveda.kotlinudemydelivery.models.User
 import com.lsepulveda.kotlinudemydelivery.routes.UsersRoutes
@@ -26,6 +27,10 @@ class UsersProvider(val token: String? = null) {
             usersRoutesToken = api.getUsersRoutesWithToken(token!!)
         }
 
+    }
+
+    fun getDeliveryMan(): Call<ArrayList<User>>?{
+        return usersRoutesToken?.getDeliveryMan(token!!)
     }
 
     // "?" metodo puede retornar o no un null

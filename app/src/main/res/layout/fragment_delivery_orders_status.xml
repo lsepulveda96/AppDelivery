@@ -1,0 +1,14 @@
+
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.delivery.DeliveryOrdersStatusFragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerview_orders"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+</FrameLayout>

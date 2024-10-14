@@ -1,4 +1,4 @@
-package com.lsepulveda.kotlinudemydelivery.fragments.client
+package com.lsepulveda.kotlinudemydelivery.fragments.restaurant
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.lsepulveda.kotlinudemydelivery.R
-import com.lsepulveda.kotlinudemydelivery.adapters.OrdersClientAdapter
+import com.lsepulveda.kotlinudemydelivery.adapters.OrdersRestaurantAdapter
 import com.lsepulveda.kotlinudemydelivery.models.Order
 import com.lsepulveda.kotlinudemydelivery.models.User
 import com.lsepulveda.kotlinudemydelivery.providers.OrdersProvider
@@ -19,7 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ClientOrdersStatusFragment : Fragment() {
+class RestaurantOrdersStatusFragment : Fragment() {
 
     var myView : View?= null
     var ordersProvider : OrdersProvider? = null
@@ -27,7 +27,7 @@ class ClientOrdersStatusFragment : Fragment() {
     var sharedPref: SharedPref?= null
 
     var recyclerViewOrders : RecyclerView? = null
-    var adapter: OrdersClientAdapter? = null
+    var adapter: OrdersRestaurantAdapter? = null
 
     var status = ""
 
@@ -36,7 +36,7 @@ class ClientOrdersStatusFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        myView = inflater.inflate(R.layout.fragment_client_orders_status, container, false)
+        myView = inflater.inflate(R.layout.fragment_restaurant_orders_status, container, false)
 
         sharedPref = SharedPref(requireActivity())
         status = arguments?.getString("status")!!
@@ -52,14 +52,14 @@ class ClientOrdersStatusFragment : Fragment() {
     }
 
     private fun getOrders(){
-        ordersProvider?.getOrdersByClientAndStatus(user?.id!!, status)?.enqueue(object : Callback<ArrayList<Order>>{
+        ordersProvider?.getOrdersByStatus(status)?.enqueue(object : Callback<ArrayList<Order>>{
             override fun onResponse(
                 call: Call<ArrayList<Order>>,
                 response: Response<ArrayList<Order>>
             ) {
                 if(response.body() != null){
                     val orders = response.body()
-                    adapter = OrdersClientAdapter(requireActivity(), orders!!)
+                    adapter = OrdersRestaurantAdapter(requireActivity(), orders!!)
                     recyclerViewOrders?.adapter = adapter
                 }
             }

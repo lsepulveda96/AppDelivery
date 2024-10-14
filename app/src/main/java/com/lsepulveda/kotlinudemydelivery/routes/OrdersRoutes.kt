@@ -26,9 +26,25 @@ interface OrdersRoutes {
 
     @GET("orders/findByStatus/{status}")
         fun getOrdersByStatus(
-            @Path("status") idUser: String,
+            @Path("status") status: String,
             @Header("Authorization") token: String
         ): Call<ArrayList<Order>>
+
+
+    @GET("orders/findByClientAndStatus/{id_client}/{status}")
+    fun getOrdersByClientAndStatus(
+        @Path("id_client") idClient: String,
+        @Path("status") status: String,
+        @Header("Authorization") token: String
+    ): Call<ArrayList<Order>>
+
+
+    @GET("orders/findByDeliveryAndStatus/{id_delivery}/{status}")
+    fun getOrdersByDeliveryAndStatus(
+        @Path("id_delivery") idDelivery: String,
+        @Path("status") status: String,
+        @Header("Authorization") token: String
+    ): Call<ArrayList<Order>>
 
     // @Multipart // multipart es para enviar archivos
     @POST("orders/create")
@@ -37,5 +53,19 @@ interface OrdersRoutes {
         @Header("Authorization") token: String
         ): Call<ResponseHttp>
 
+
+
+    @PUT("orders/updateToDispatched")
+    fun updateToDispatched(
+        @Body orders: Order,
+        @Header("Authorization") token: String
+    ): Call<ResponseHttp>
+
+
+    @PUT("orders/updateToOnTheWay")
+    fun updateToOnTheWay(
+        @Body orders: Order,
+        @Header("Authorization") token: String
+    ): Call<ResponseHttp>
 
 }

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.client.home.DeliveryHomeActivity">
+    tools:context=".activities.delivery.home.DeliveryHomeActivity">
 
 
     <FrameLayout
@@ -19,9 +19,9 @@
             android:layout_height="wrap_content"
             app:menu="@menu/bottom_navigation_menu_delivery"
             android:layout_gravity="bottom"
-            android:background="@color/green"
-            app:itemIconTint="@color/white"
-            app:itemTextColor="@color/white"/>
+            android:background="@color/white"
+            app:itemIconTint="@color/black"
+            app:itemTextColor="@color/black"/>
 
     </FrameLayout>
 

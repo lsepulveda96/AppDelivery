@@ -1,5 +1,6 @@
 package com.lsepulveda.kotlinudemydelivery.routes
 
+import com.lsepulveda.kotlinudemydelivery.models.Category
 import com.lsepulveda.kotlinudemydelivery.models.ResponseHttp
 import com.lsepulveda.kotlinudemydelivery.models.User
 import okhttp3.MultipartBody
@@ -8,6 +9,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.HEAD
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -19,6 +21,12 @@ interface UsersRoutes {
     @POST("users/create")
     // call <retorno que devuelve servidor> ej succes, message, data
     fun register(@Body user: User) : Call<ResponseHttp>
+
+    @GET("users/findDeliveryMan")
+    fun getDeliveryMan(
+        @Header("Authorization") token: String
+    ): Call<ArrayList<User>>
+
 
     // iguales que en el backend
     @FormUrlEncoded

@@ -17,6 +17,7 @@ import com.lsepulveda.kotlinudemydelivery.activities.client.orders.detail.Client
 import com.lsepulveda.kotlinudemydelivery.activities.client.products.list.ClientProductListActivity
 import com.lsepulveda.kotlinudemydelivery.activities.delivery.home.DeliveryHomeActivity
 import com.lsepulveda.kotlinudemydelivery.activities.restaurant.home.RestaurantHomeActivity
+import com.lsepulveda.kotlinudemydelivery.activities.restaurant.orders.detail.RestaurantOrdersDetailActivity
 import com.lsepulveda.kotlinudemydelivery.models.Address
 import com.lsepulveda.kotlinudemydelivery.models.Category
 import com.lsepulveda.kotlinudemydelivery.models.Order
@@ -24,11 +25,11 @@ import com.lsepulveda.kotlinudemydelivery.models.Rol
 import com.lsepulveda.kotlinudemydelivery.utils.SharedPref
 
 // es reutilizable, solo se tiene que especificar que tipo de lista vamos a usar
-class OrdersClientAdapter(val context: Activity, val orders:ArrayList<Order>): RecyclerView.Adapter<OrdersClientAdapter.OrdersViewHolder>() {
+class OrdersRestaurantAdapter(val context: Activity, val orders:ArrayList<Order>): RecyclerView.Adapter<OrdersRestaurantAdapter.OrdersViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrdersViewHolder {
         // instancia la vista
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.cardview_orders, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.cardview_orders_restaurant, parent, false)
         return OrdersViewHolder(view)
     }
 
@@ -44,12 +45,13 @@ class OrdersClientAdapter(val context: Activity, val orders:ArrayList<Order>): R
         holder.textviewOrderId.text = "Orden #${order.id}"
         holder.textviewDate.text = "${order.timestamp}"
         holder.textviewAddress.text = "${order.address?.address}"
+        holder.textviewClient.text = "${order.client?.name} ${order?.client?.lastname}"
 
         holder.itemView.setOnClickListener{ goToOrderDetail(order) }
     }
 
     private fun goToOrderDetail(order: Order){
-        val i = Intent(context, ClientOrdersDetailActivity::class.java)
+        val i = Intent(context, RestaurantOrdersDetailActivity::class.java)
         i.putExtra("order", order.toJson())
         context.startActivity(i)
     }
@@ -59,11 +61,13 @@ class OrdersClientAdapter(val context: Activity, val orders:ArrayList<Order>): R
         val textviewOrderId : TextView
         val textviewDate : TextView
         val textviewAddress : TextView
+        val textviewClient : TextView
 
         init {
             textviewOrderId = view.findViewById(R.id.textview_order_id)
             textviewDate = view.findViewById(R.id.textview_date)
             textviewAddress = view.findViewById(R.id.textview_address)
+            textviewClient = view.findViewById(R.id.textview_client)
         }
     }
 }
