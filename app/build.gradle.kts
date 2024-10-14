@@ -80,4 +80,7 @@ dependencies {
     // para trazado de rutas
     implementation("com.github.malikdawar:drawroute:1.5")
 
+    // para sockets io
+    implementation("com.github.nkzawa:socket.io-client:0.6.0")
+
 }

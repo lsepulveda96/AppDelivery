@@ -1,7 +1,10 @@
 package com.lsepulveda.kotlinudemydelivery.activities.client.orders.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.lsepulveda.kotlinudemydelivery.R
+import com.lsepulveda.kotlinudemydelivery.activities.client.orders.map.ClientOrdersMapActivity
+import com.lsepulveda.kotlinudemydelivery.activities.delivery.home.orders.map.DeliveryOrdersMapActivity
 import com.lsepulveda.kotlinudemydelivery.adapters.OrderProductsAdapter
 import com.lsepulveda.kotlinudemydelivery.models.Order
 
@@ -29,6 +34,8 @@ class ClientOrdersDetailActivity : AppCompatActivity() {
     var textViewTotal : TextView? = null
     var textViewStatus : TextView? = null
     var recyclerViewProducts : RecyclerView? = null
+    var buttonGoToMap : Button? = null
+
 
     var adapter : OrderProductsAdapter? = null
 
@@ -51,6 +58,7 @@ class ClientOrdersDetailActivity : AppCompatActivity() {
         textViewStatus = findViewById(R.id.textview_status)
         recyclerViewProducts = findViewById(R.id.recyclerview_products)
         recyclerViewProducts?.layoutManager = LinearLayoutManager(this)
+        buttonGoToMap = findViewById(R.id.btn_go_to_map)
 
         adapter = OrderProductsAdapter(this, order?.products!!)
         recyclerViewProducts?.adapter = adapter
@@ -62,8 +70,22 @@ class ClientOrdersDetailActivity : AppCompatActivity() {
 
         Log.d(TAG, "Order: ${order.toString()}")
 
+
         getTotal()
+
+        if(order?.status == "EN CAMINO"){
+            buttonGoToMap?.visibility = View.VISIBLE
+        }
+
+        buttonGoToMap?.setOnClickListener{goToMap()}
     }
+
+    private fun goToMap(){
+        val i = Intent(this, ClientOrdersMapActivity::class.java)
+        i.putExtra("order", order?.toJson()) // pasa la orden, para desps obtener la ubicacion
+        startActivity(i)
+    }
+
 
     private fun getTotal(){
 

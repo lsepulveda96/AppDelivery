@@ -48,4 +48,12 @@ class OrdersProvider(val token: String) {
     fun updateToOnTheWay( order: Order) : Call<ResponseHttp>?{
         return ordersRoutes?.updateToOnTheWay(order, token)
     }
+
+    fun updateToDelivered( order: Order) : Call<ResponseHttp>?{
+        return ordersRoutes?.updateToDelivered(order, token)
+    }
+
+    fun updateLatLng( order: Order) : Call<ResponseHttp>?{
+        return ordersRoutes?.updateLatLng(order, token)
+    }
 }
