@@ -485,6 +485,8 @@ class DeliveryOrdersMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 updateOrder()
             }
             else {
+                // esto es dentro del delivery. que igualmente entrege el pedido a modo de simulacion
+                // y pase a pantalla principal, update a campo como entregado y vuelta al menu principal
                 Toast.makeText(this, "Acercate mas al lugar de entrega", Toast.LENGTH_LONG).show()
             }
 
