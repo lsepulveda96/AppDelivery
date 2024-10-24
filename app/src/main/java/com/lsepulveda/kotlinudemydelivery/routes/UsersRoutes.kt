@@ -33,6 +33,7 @@ interface UsersRoutes {
     @POST("users/login")
     fun login(@Field("email") email : String, @Field("password") password: String) : Call<ResponseHttp>
 
+
     @Multipart
     @PUT("users/update")
     fun update(
@@ -41,8 +42,16 @@ interface UsersRoutes {
         @Header("Authorization") token: String
         ): Call<ResponseHttp>
 
+
     @PUT("users/updateWithoutImage")
     fun updateWithoutImage(
+        @Body user: User,
+        @Header("Authorization") token: String
+    ): Call<ResponseHttp>
+
+
+    @PUT("users/updateNotificationToken")
+    fun updateNotificationToken(
         @Body user: User,
         @Header("Authorization") token: String
     ): Call<ResponseHttp>

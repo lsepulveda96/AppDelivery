@@ -11,4 +11,7 @@
 
     <!--    <string name="google_map_api_key">AIzaSyBaV90uUxmm7-S5V6f40-nje-1V3NHtbos</string>-->
     <string name="google_map_api_key">AIzaSyAFP6V3BIblFBCkunUTTYolEAG7un_jpwU</string>
+
+    <string name="default_notification_channel_id">fcm_default_channel</string>
+
 </resources>

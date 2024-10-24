@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,10 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.lsepulveda.kotlinudemydelivery.R
 import com.lsepulveda.kotlinudemydelivery.activities.delivery.home.orders.map.DeliveryOrdersMapActivity
-import com.lsepulveda.kotlinudemydelivery.activities.restaurant.home.RestaurantHomeActivity
 import com.lsepulveda.kotlinudemydelivery.adapters.OrderProductsAdapter
-import com.lsepulveda.kotlinudemydelivery.fragments.delivery.DeliveryOrdersStatusFragment
-import com.lsepulveda.kotlinudemydelivery.models.Category
 import com.lsepulveda.kotlinudemydelivery.models.Order
 import com.lsepulveda.kotlinudemydelivery.models.ResponseHttp
 import com.lsepulveda.kotlinudemydelivery.models.User
@@ -45,7 +39,7 @@ class DeliveryOrdersDetailActivity : AppCompatActivity() {
     var textViewTotal : TextView? = null
     var textViewStatus : TextView? = null
     var recyclerViewProducts : RecyclerView? = null
-    var buttonUpdate : Button? = null
+    var buttonStartDelivery : Button? = null
     var buttonGoToMap : Button? = null
 
     var adapter : OrderProductsAdapter? = null
@@ -82,7 +76,7 @@ class DeliveryOrdersDetailActivity : AppCompatActivity() {
 
         recyclerViewProducts = findViewById(R.id.recyclerview_products)
         recyclerViewProducts?.layoutManager = LinearLayoutManager(this)
-        buttonUpdate = findViewById(R.id.btn_update)
+        buttonStartDelivery = findViewById(R.id.btn_start_delivery)
         buttonGoToMap = findViewById(R.id.btn_go_to_map)
 
         adapter = OrderProductsAdapter(this, order?.products!!)
@@ -99,19 +93,22 @@ class DeliveryOrdersDetailActivity : AppCompatActivity() {
         getTotal()
 
         if (order?.status == "DESPACHADO") {
-            buttonUpdate?.visibility = View.VISIBLE
+            buttonStartDelivery?.visibility = View.VISIBLE
         }
 
         if (order?.status == "EN CAMINO") {
             buttonGoToMap?.visibility = View.VISIBLE
-//        }
-//
-            buttonUpdate?.setOnClickListener { updateOrder() }
+        }
+
+            buttonStartDelivery?.setOnClickListener { updateOrder() }
             buttonGoToMap?.setOnClickListener { goToMap() }
         }
-    }
+
 
     private fun updateOrder(){
+
+        Log.d(TAG, "Datos de la orden que no anda: " + order.toString())
+
         ordersProvider?.updateToOnTheWay(order!!)?.enqueue(object : Callback<ResponseHttp>{
             override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
                 if(response.body() != null){
@@ -140,6 +137,7 @@ class DeliveryOrdersDetailActivity : AppCompatActivity() {
     private fun goToMap(){
         val i = Intent(this, DeliveryOrdersMapActivity::class.java)
         i.putExtra("order", order?.toJson()) // pasa la orden, para desps obtener la ubicacion
+
         startActivity(i)
     }
 

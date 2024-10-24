@@ -376,6 +376,9 @@ import com.lsepulveda.kotlinudemydelivery.utils.SocketHandler
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 
 
 class DeliveryOrdersMapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -383,6 +386,7 @@ class DeliveryOrdersMapActivity : AppCompatActivity(), OnMapReadyCallback {
     val TAG = "DeliveryOrdersMap"
     var googleMap: GoogleMap? = null
 
+    var toolbar : Toolbar? = null
 
     val PERMISSION_ID = 42
     var fusedLocationClient: FusedLocationProviderClient? = null
@@ -478,6 +482,12 @@ class DeliveryOrdersMapActivity : AppCompatActivity(), OnMapReadyCallback {
             Glide.with(this).load(order?.client?.image).into(circleImageUser!!)
         }
 
+        toolbar = findViewById(R.id.toolbar)
+        toolbar?.setTitleTextColor(ContextCompat.getColor(this, R.color.black))
+        toolbar?.title = "Order #${order?.id}"
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         buttonDelivered?.setOnClickListener {
 
             // si esta cerca de la posicion de entrega, que actualize la orden a entregado
@@ -487,7 +497,9 @@ class DeliveryOrdersMapActivity : AppCompatActivity(), OnMapReadyCallback {
             else {
                 // esto es dentro del delivery. que igualmente entrege el pedido a modo de simulacion
                 // y pase a pantalla principal, update a campo como entregado y vuelta al menu principal
-                Toast.makeText(this, "Acercate mas al lugar de entrega", Toast.LENGTH_LONG).show()
+                //Toast.makeText(this, "Acercate mas al lugar de entrega", Toast.LENGTH_LONG).show()
+
+                mostrarConfirmacion(this)
             }
 
         }
@@ -504,6 +516,30 @@ class DeliveryOrdersMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         connectSocket()
 
+    }
+
+    private fun mostrarConfirmacion(context: Context) {
+        val builder = AlertDialog.Builder(context)
+
+        // Configuramos el mensaje del diálogo
+        builder.setMessage("Este no es el lugar de entrega, finalizar entrega de todas maneras?")
+            .setCancelable(false) // Impide que el usuario cierre el diálogo al tocar fuera de él.
+
+            // Opción "Continuar"
+            .setPositiveButton("Continuar") { dialog, id ->
+                // Acción al presionar "Continuar"
+                updateOrder()
+            }
+
+            // Opción "Cancelar"
+            .setNegativeButton("Cancelar") { dialog, id ->
+                // Acción al presionar "Cancelar" (solo cierra el diálogo)
+                dialog.dismiss()
+            }
+
+        // Crear y mostrar el diálogo
+        val alert = builder.create()
+        alert.show()
     }
 
     // emitir posicion a Socket IO

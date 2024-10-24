@@ -17,6 +17,7 @@ import com.lsepulveda.kotlinudemydelivery.fragments.client.ClientCategoriesFragm
 import com.lsepulveda.kotlinudemydelivery.fragments.client.ClientOrdersFragment
 import com.lsepulveda.kotlinudemydelivery.fragments.client.ClientProfileFragment
 import com.lsepulveda.kotlinudemydelivery.models.User
+import com.lsepulveda.kotlinudemydelivery.providers.UsersProvider
 import com.lsepulveda.kotlinudemydelivery.utils.SharedPref
 import kotlin.math.log
 
@@ -25,6 +26,10 @@ class ClientHomeActivity : AppCompatActivity() {
     private val TAG = "ClientHomeActivity"
   //  var btnLogout: Button? = null
     var sharedPref: SharedPref? = null
+
+    var usersProvider: UsersProvider?= null
+
+    var user: User?= null
 
     var bottomNaigation: BottomNavigationView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +67,12 @@ class ClientHomeActivity : AppCompatActivity() {
             }
         }
         getUserFromSession()
+        usersProvider = UsersProvider(token = user?.sessionToken)
+        createToken()
+    }
+
+    private fun createToken(){
+        usersProvider?.createToken(user!!, this)
     }
 
     private fun openFragment(fragment: Fragment){
@@ -77,8 +88,8 @@ class ClientHomeActivity : AppCompatActivity() {
 
         // si el usuario existe en sesion
         if(!sharedPref?.getData("user").isNullOrBlank()){
-            val user = gson.fromJson(sharedPref?.getData("user"), User::class.java)
-            Log.d(TAG, "Usuario: $user")
+            user = gson.fromJson(sharedPref?.getData("user"), User::class.java)
+
         }
     }
 }

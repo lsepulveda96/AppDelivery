@@ -6,6 +6,9 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -31,7 +34,8 @@
             android:exported="false" />
         <activity
             android:name=".activities.delivery.home.orders.map.DeliveryOrdersMapActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:parentActivityName=".activities.delivery.home.DeliveryHomeActivity"/>
         <activity
             android:name=".activities.delivery.home.orders.detail.DeliveryOrdersDetailActivity"
             android:exported="true"
@@ -103,6 +107,18 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAFP6V3BIblFBCkunUTTYolEAG7un_jpwU" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <service
+            android:name=".services.MyFirebaseMessagingClient"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

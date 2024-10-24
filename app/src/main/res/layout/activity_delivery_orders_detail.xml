@@ -151,7 +151,7 @@ tools:context=".activities.delivery.home.orders.detail.DeliveryOrdersDetailActiv
 
 
     <Button
-        android:id="@+id/btn_update"
+        android:id="@+id/btn_start_delivery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Iniciar entrega"

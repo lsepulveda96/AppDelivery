@@ -1,7 +1,9 @@
 package com.lsepulveda.kotlinudemydelivery.activities.client.adress.list
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -31,6 +33,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.collections.ArrayList
+import android.os.Handler
+import com.lsepulveda.kotlinudemydelivery.activities.client.home.ClientHomeActivity
+import kotlinx.coroutines.*
 
 class ClientAddressListActivity : AppCompatActivity() {
 
@@ -83,13 +88,38 @@ class ClientAddressListActivity : AppCompatActivity() {
     }
 
     private fun getAddressFromSession(){
+
         if(!sharedPref?.getData("address").isNullOrBlank()){
-            val a = gson.fromJson(sharedPref?.getData("address"), Address::class.java) // si user ya seleccion dir
-            createOrder(a.id!!) // id address
-        //goToPaymentForm()
+
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setMessage("Simulando pago...")
+            progressDialog.setCancelable(false) // Evita que el usuario lo cierre
+            progressDialog.show()
+
+            // Simular el tiempo de espera de 3 segundos sin bloquear el hilo principal
+            Handler(Looper.getMainLooper()).postDelayed({
+                // Cerrar el ProgressDialog después de los 3 segundos
+                progressDialog.dismiss()
+
+                // Luego de cerrar el ProgressDialog, continúa con la lógica
+                val a = gson.fromJson(sharedPref?.getData("address"), Address::class.java) // si user ya seleccion dir
+                //goToPaymentForm()
+                
+                // sharedPref?.remove("order") // temporal, para probar y que no me borre la orden denuevo
+                createOrder(a.id!!) // id address
+                goToHome()  // Asegúrate de que esto se ejecute después de los 3 segundos
+            }, 3000) // 3000 milisegundos = 3 segundos
+
+
         }else{
             Toast.makeText(this, "Selecciona una direccion para continuar", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun goToHome() {
+        val i = Intent(this, ClientHomeActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(i)
     }
 
     private fun createOrder(idAddress: String){

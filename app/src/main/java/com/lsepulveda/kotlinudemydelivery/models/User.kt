@@ -14,6 +14,7 @@ class User(
     @SerializedName("image") var image : String? = null,
     // val puede tener otro nombre
     @SerializedName("session_token") val sessionToken : String? = null,
+    @SerializedName("notification_token") var notificationToken : String? = null,
     // ? = null puede ir nulo, al momento de crearlo no lo especificamos
     @SerializedName("is_available") val isAvailable : Boolean? = null,
     @SerializedName("roles") val roles : ArrayList<Rol>? = null,

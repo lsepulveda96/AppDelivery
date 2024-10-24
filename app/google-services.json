@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "716859796720",
+    "project_id": "kotlindelivery-abeaf",
+    "storage_bucket": "kotlindelivery-abeaf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716859796720:android:b43337ad14931aafa36635",
+        "android_client_info": {
+          "package_name": "com.lsepulveda.kotlinudemydelivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8mVXpI1WdHbXzCAorAuhTd4Ii0adIV5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
