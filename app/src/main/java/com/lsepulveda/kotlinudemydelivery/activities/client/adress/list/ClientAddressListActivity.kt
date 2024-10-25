@@ -105,7 +105,7 @@ class ClientAddressListActivity : AppCompatActivity() {
                 val a = gson.fromJson(sharedPref?.getData("address"), Address::class.java) // si user ya seleccion dir
                 //goToPaymentForm()
                 
-                // sharedPref?.remove("order") // temporal, para probar y que no me borre la orden denuevo
+                //sharedPref?.remove("order") // temporal
                 createOrder(a.id!!) // id address
                 goToHome()  // Asegúrate de que esto se ejecute después de los 3 segundos
             }, 3000) // 3000 milisegundos = 3 segundos
