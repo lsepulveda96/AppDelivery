@@ -142,6 +142,8 @@ class RestaurantProductFragment : Fragment() {
 
         if (isValidForm(name, description, priceText)) {
 
+            Log.d(TAG, "idCategory sin seleccion!!!: $idCategory")
+
             val product = Product(
                 name = name,
                 description = description,

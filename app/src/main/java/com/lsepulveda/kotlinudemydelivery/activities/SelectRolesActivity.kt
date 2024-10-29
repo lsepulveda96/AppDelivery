@@ -45,4 +45,6 @@ class SelectRolesActivity : AppCompatActivity() {
             user = gson.fromJson(sharedPref.getData("user"), User::class.java)
         }
     }
+
+
 }

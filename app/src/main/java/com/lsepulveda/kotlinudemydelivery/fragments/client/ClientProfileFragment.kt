@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.lsepulveda.kotlinudemydelivery.R
@@ -21,6 +22,8 @@ import com.lsepulveda.kotlinudemydelivery.utils.SharedPref
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ClientProfileFragment : Fragment() {
+
+    val TAG = "ClientProfileFragment"
     var myView: View? = null
     var buttonSelectRol : Button? = null
     var buttonUpdateProfile : Button? = null
@@ -28,7 +31,7 @@ class ClientProfileFragment : Fragment() {
     var textViewName: TextView? = null
     var textViewEmail: TextView? = null
     var textViewPhone: TextView? = null
-    var imageViewLoguut: ImageView? = null
+    var imageViewLogout: ImageView? = null
 
     var sharedPref: SharedPref? = null
     var user: User? = null
@@ -48,10 +51,18 @@ class ClientProfileFragment : Fragment() {
         textViewEmail = myView?.findViewById(R.id.textview_email)
         textViewPhone = myView?.findViewById(R.id.textview_phone)
         circleImageUser = myView?.findViewById(R.id.circle_image_user)
-        imageViewLoguut = myView?.findViewById(R.id.imageview_logout)
+        imageViewLogout = myView?.findViewById(R.id.imageview_logout)
 
-        buttonSelectRol?.setOnClickListener{ goToSelectRol() }
-        imageViewLoguut?.setOnClickListener{ logout() }
+        buttonSelectRol?.setOnClickListener{
+
+            // si el usuario tiene un solo rol
+            if(user?.roles != null){ // si el usuario tiene mas de un rol
+                goToSelectRol()
+            }else{ // el usuario solo tiene un rol. cliente
+                Toast.makeText(context, "El usuario solo tiene un rol activo", Toast.LENGTH_SHORT).show()
+            }
+        }
+        imageViewLogout?.setOnClickListener{ logout() }
         buttonUpdateProfile?.setOnClickListener{ goToUpdate() }
 
         // obtiene los datos del usuario
@@ -92,7 +103,7 @@ class ClientProfileFragment : Fragment() {
     private fun goToSelectRol(){
         // require context porque estamos dentro de un fragment
         val i = Intent(requireContext(), SelectRolesActivity::class.java)
-        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // eliminar historial de pantallas
+        //i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // eliminar historial de pantallas
         startActivity(i)
     }
 }

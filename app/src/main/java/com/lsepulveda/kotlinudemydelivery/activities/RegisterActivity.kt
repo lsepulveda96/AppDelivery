@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.lsepulveda.kotlinudemydelivery.R
 import com.lsepulveda.kotlinudemydelivery.activities.client.home.ClientHomeActivity
@@ -49,6 +50,7 @@ class RegisterActivity : AppCompatActivity() {
         editTextConfirmPassword = findViewById(R.id.edittext_confirm_password)
         editTextPassword = findViewById(R.id.edittext_password)
         buttonRegister = findViewById(R.id.btn_register)
+        imageViewGoToLogin = findViewById(R.id.imageview_go_to_login)
 
 
         imageViewGoToLogin?.setOnClickListener { goToLogin() }
@@ -83,8 +85,25 @@ class RegisterActivity : AppCompatActivity() {
 
                     if(response.body()?.isSuccess == true){
                         saveUserInSession(response.body()?.data.toString())
+                        Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
                         goToClientHome()
                     }
+                    // inicio codigo para capturar error mail numbero repetido
+                    else if (response.code() == 409) {
+                        // Manejar error de duplicación
+                        val errorMessage = response.errorBody()?.string() // Extraer mensaje de error del servidor
+                        if (errorMessage?.contains("El email ya está registrado") == true) {
+                            findViewById<TextInputLayout>(R.id.emailLayout).error = "Este email ya está registrado"
+                        } else if (errorMessage?.contains("El número de teléfono ya está registrado") == true) {
+                            findViewById<TextInputLayout>(R.id.phoneLayout).error = "Este número ya está registrado"
+                        }
+                    } else {
+                        // Otro tipo de error
+                        Toast.makeText(this@RegisterActivity, "Error al registrar. Inténtelo de nuevo", Toast.LENGTH_LONG).show()
+                    }
+                    // fin codigo para capturar error mail numbero repetido
+
+
                     // imprime el mensaje que retorno el servidor en message
                     //Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
 
@@ -131,47 +150,99 @@ class RegisterActivity : AppCompatActivity() {
         confirmPassword: String
     ): Boolean {
 
+        var isValid = true
+
+        // Limpiar errores previos
+        findViewById<TextInputLayout>(R.id.nameLayout).error = null
+        findViewById<TextInputLayout>(R.id.lastnameLayout).error = null
+        findViewById<TextInputLayout>(R.id.emailLayout).error = null
+        findViewById<TextInputLayout>(R.id.phoneLayout).error = null
+        findViewById<TextInputLayout>(R.id.passwordLayout).error = null
+        findViewById<TextInputLayout>(R.id.confirm_passwordLayout).error = null
+
         if (name.isBlank()) {
-            Toast.makeText(this, "Debes ingresar el nombre", Toast.LENGTH_SHORT).show()
-            return false
+            findViewById<TextInputLayout>(R.id.nameLayout).error = "Debes ingresar el nombre"
+            isValid = false
         }
 
         if (lastname.isBlank()) {
-            Toast.makeText(this, "Debes ingresar el apellido", Toast.LENGTH_SHORT).show()
-            return false
+            findViewById<TextInputLayout>(R.id.lastnameLayout).error = "Debes ingresar el apellido"
+            isValid = false
         }
 
         if (phone.isBlank()) {
-            Toast.makeText(this, "Debes ingresar el telefono", Toast.LENGTH_SHORT).show()
-            return false
+            findViewById<TextInputLayout>(R.id.phoneLayout).error = "Debes ingresar el teléfono"
+            isValid = false
         }
 
         if (email.isBlank()) {
-            Toast.makeText(this, "Debes ingresar el email", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (password.isBlank()) {
-            Toast.makeText(this, "Debes ingresar el contraseña", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (confirmPassword.isBlank()) {
-            Toast.makeText(this, "Debes ingresar el la confirmacion de contraseña", Toast.LENGTH_SHORT).show()
-            return false
+            findViewById<TextInputLayout>(R.id.emailLayout).error = "Debes ingresar el email"
+            isValid = false
         }
 
         if (!email.isEmailValid()) {
-            Toast.makeText(this, "El email no es valido", Toast.LENGTH_SHORT).show()
-            return false
+            findViewById<TextInputLayout>(R.id.emailLayout).error = "El email no es válido"
+            isValid = false
+        }
+
+        if (password.isBlank()) {
+            findViewById<TextInputLayout>(R.id.passwordLayout).error = "Debes ingresar la contraseña"
+            isValid = false
+        }
+
+        if (confirmPassword.isBlank()) {
+            findViewById<TextInputLayout>(R.id.confirm_passwordLayout).error = "Debes ingresar la confirmación de contraseña"
+            isValid = false
         }
 
         if (password != confirmPassword) {
-            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
-            return false
+            findViewById<TextInputLayout>(R.id.confirm_passwordLayout).error = "Las contraseñas no coinciden"
+            isValid = false
         }
 
-        return true
+        return isValid
+
+        /* if (name.isBlank()) {
+             Toast.makeText(this, "Debes ingresar el nombre", Toast.LENGTH_SHORT).show()
+             return false
+         }
+
+         if (lastname.isBlank()) {
+             Toast.makeText(this, "Debes ingresar el apellido", Toast.LENGTH_SHORT).show()
+             return false
+         }
+
+         if (phone.isBlank()) {
+             Toast.makeText(this, "Debes ingresar el telefono", Toast.LENGTH_SHORT).show()
+             return false
+         }
+
+         if (email.isBlank()) {
+             Toast.makeText(this, "Debes ingresar el email", Toast.LENGTH_SHORT).show()
+             return false
+         }
+
+         if (password.isBlank()) {
+             Toast.makeText(this, "Debes ingresar el contraseña", Toast.LENGTH_SHORT).show()
+             return false
+         }
+
+         if (confirmPassword.isBlank()) {
+             Toast.makeText(this, "Debes ingresar el la confirmacion de contraseña", Toast.LENGTH_SHORT).show()
+             return false
+         }
+
+         if (!email.isEmailValid()) {
+             Toast.makeText(this, "El email no es valido", Toast.LENGTH_SHORT).show()
+             return false
+         }
+
+         if (password != confirmPassword) {
+             Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+             return false
+         }
+
+         return true*/
     }
 
 

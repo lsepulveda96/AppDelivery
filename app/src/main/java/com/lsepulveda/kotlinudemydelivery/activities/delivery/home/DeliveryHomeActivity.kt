@@ -26,13 +26,7 @@ class DeliveryHomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_delivery_home)
 
 
-
         sharedPref = SharedPref(this)
-        //btnLogout = findViewById(R.id.btn_logout)
-        //btnLogout?.setOnClickListener{
-        //  // para cerrar sesion
-        //   logout()
-        // }
 
         openFragment(DeliveryOrdersFragment())
 

@@ -107,8 +107,6 @@ class DeliveryOrdersDetailActivity : AppCompatActivity() {
 
     private fun updateOrder(){
 
-        Log.d(TAG, "Datos de la orden que no anda: " + order.toString())
-
         ordersProvider?.updateToOnTheWay(order!!)?.enqueue(object : Callback<ResponseHttp>{
             override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
                 if(response.body() != null){
